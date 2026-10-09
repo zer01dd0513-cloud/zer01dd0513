@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<head>
+  <meta charset="UTF-8">
+	<title>diary</title> 
+	<style>
+  </style>
+</head>
+<body>
+	<audio id="myMusic" src="Night to howl!.m4a" loop></audio>
+	<button onclick="playMusic()">후기</button>
+  <script>
+    const music = document.getElementById('myMusic');
+    function playMusic() {
+      music.play();
+    }
+    function pauseMusic() {
+      music.pause();
+    }
+  </script>
+</body>
+</html>
