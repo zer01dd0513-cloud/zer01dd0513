@@ -3,18 +3,54 @@
   <meta charset="UTF-8">
 	<title>diary</title> 
 	<style>
+		<body>{
+			display: flex;
+			flex-direction: column;
+			justify-content: center;
+			align-items: center;
+			height: 100vh
+			margin: 0;
+			background-color: #fdfbf7;
+		.message{
+			display: none;
+			margin-top: 25px;
+			font-size: 20px;
+			font-weight: bold;
+			color: #333;
+			animation: fadeIn 1s ease-in-out;
+		}
+		.play-btn{
+			padding: 15px 30px;
+			font-size: 18px;
+			font-weight: bold;
+			color: white;
+			background-color; #ff7b9c;
+			border: none;
+			border-radius: 30px;
+			cursor: pointer;
+			box-shadow: 0 4px 10px rgba(0.0.0.0.1);
+		}
+		.play-btn:hover {
+			background-color: #ff527b;
+		}
+		@keyframes fadeIn {
+			from { opacity: 0; transform: translateY(10px); }
+			to { opacity: 1; transform: translateY(0); }
+			}
   </style>
 </head>
 <body>
 	<audio id="myMusic" src="Night to howl!.m4a" loop></audio>
-	<button onclick="playMusic()">후기</button>
-  <script>
-    const music = document.getElementById('myMusic');
-    function playMusic() {
-      music.play();
-    }
-    function pauseMusic() {
-      music.pause();
+	<button class="play-btn" oneclick="startEffect()">후기</button>
+	<div id="textMessage" class="message">
+		소설
+	</div>
+	<script>
+    function startEffect() {
+		const audio = document.gerElementById('bgm')
+		const text = document.getElementById('textMessage');
+		audio.play();
+		text.style.display = 'block';
     }
   </script>
 </body>
