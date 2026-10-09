@@ -51,7 +51,7 @@
   }
   
   a:hover {
-    color: blue;
+    color: #ee5293;
   }
   @keyframes fadeIn {
    from {opacity: 0;}
@@ -66,13 +66,25 @@
 h3{
     animation: fadeIn 2s;
   }
-  p{
+  p{ font-family: 'HancomMalrangmalrang';
     animation: fadeIn 2s;
   }
 	</style>
 </head>
 <body>
-  <h1>ウサギと ぶた</h1>
+	<audio id="myMusic" src="Night to howl!.m4a" loop></audio>
+	<button onclick="playMusic()">▶</button>
+	<button onclick="pauseMusic()">■</button>
+  <script>
+    const music = document.getElementById('myMusic');
+    function playMusic() {
+      music.play();
+    }
+    function pauseMusic() {
+      music.pause();
+    }
+  </script>
+  <h1>ウサギと豚</h1>
   <h2>토끼와 돼지</h2>
 	<h3>2026の haruataki</h3>
   <p>
