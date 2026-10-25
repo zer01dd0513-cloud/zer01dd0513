@@ -1,85 +1,105 @@
 <!DOCTYPE html>
+<html lang="ko">
 <head>
-  <meta charset="UTF-8">
-	<title>月の結晶</title> 
-	<style>
-		@font-face {
-			font-family: 'HancomMalrangmalrang';
-    		src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/2406-1@1.0/HancomMalangMalang-Bold.woff2') format('woff2');
-    		font-weight: 700;
-    		font-display: swap;
-		}
-		body{
-    	background-image: url('1791534830518.png');
-    	background-size: auto;
-		background-repeat : no-repeat;
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>月の結晶</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;900&family=Space+Mono&display=swap" rel="stylesheet">
+<style>
+  html, body { margin: 0; height: 100%; background: #fff; }
+  svg { display: block; width: 100%; height: 100vh; }
+
+  /* 1) 물줄기가 왼쪽에서 밀려 내려옴 */
+  .draw { stroke-dasharray: 1; stroke-dashoffset: 1;
+          animation: draw 1.8s cubic-bezier(.25,.6,.2,1) .3s forwards; }
+  /* 2) 물줄기 안의 사진이 계속 흘러감 */
+  .flow { animation: drift 7s ease-in-out infinite alternate; }
+  /* 3) 정사각형이 훅 차오름 */
+  .rise { transform: translateY(360px);
+          animation: rise .9s cubic-bezier(.7,0,.15,1) 1.3s forwards; }
+  /* 4) 라벨이 뜸 */
+  .label { opacity: 0; animation: fadein .8s ease 2.1s forwards; }
+
+  @keyframes draw   { to { stroke-dashoffset: 0; } }
+  @keyframes rise   { to { transform: translateY(0); } }
+  @keyframes drift  { from { transform: translateX(0); } to { transform: translateX(-120px); } }
+  @keyframes fadein { to { opacity: 1; } }
+
+  .label text { font: 400 26px 'Space Mono', monospace; letter-spacing: 8px; fill: #111; }
+  .label a:hover text { text-decoration: underline; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .draw, .rise, .flow, .label { animation: none; }
+    .draw { stroke-dashoffset: 0; } .rise { transform: none; } .label { opacity: 1; }
   }
-  	h1{ font-family: 'HancomMalrangmalrang';
-    	color: black;
-    	font-size: 50px;
-    	text-align: center;
-    	font-weight: 500;
-    	margin-top: 100px;
-    	margin-bottom: 0;
-	  }
-  
- h2{
-   color: black; 
-		  font-size: 20px;
-   text-align: center;
-   font-weight: 300;
-   margin-top: 10px;
- }
-	h3{
-   color: black; 
-		  font-size: 10px;
-   text-align: center;
-   font-weight: 300;
-   margin-top: 25px;
- }
- 
-	p{
-	  color: #333333;
-	  font-size: 15px;
-	  font-weight: bold;
-	  text-align: center;
-	}
-  
-  a{
-    color: black;
-    text-decoration: none;
-    margin: 0 10px;
-  }
-  
-  a:hover {
-    color: #ee5293;
-  }
-  @keyframes fadeIn {
-   from {opacity: 0;}
-   to {opacity: 1;}
- }
-  h1{
-    animation: fadeIn 2s;
-  }
-  h2{
-    animation: fadeIn 2s;
-  }
-h3{
-    animation: fadeIn 2s;
-  }
-  p{ font-family: 'HancomMalrangmalrang';
-    animation: fadeIn 2s;
-  }
-	</style>
+</style>
 </head>
 <body>
-  <h1>月の結晶</h1>
-  <h2>行き先示す月の結晶</h2>
-	<h3>2026の haruataki</h3>
-  <p>
-    <a href="FIC1.html">FIC</a> 
-    <a href="art.html">ART</a>
-    <a href="diary.html">CARD</a>
-  </p>
+
+<svg viewBox="0 0 1200 800" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <!-- 부채꼴 모양: 왼쪽은 좁고, 정사각형 쪽으로 갈수록 넓어짐 -->
+    <clipPath id="fan">
+      <path d="M -40,120 C 300,-20 800,0 960,300 L 600,300 C 450,170 200,170 -40,150 Z"/>
+    </clipPath>
+
+    <!-- 정사각형 안쪽만 보이게 -->
+    <clipPath id="box">
+      <rect x="600" y="250" width="360" height="360"/>
+    </clipPath>
+
+    <!-- 물줄기가 흘러내리는 경로 (왼쪽 위 → 정사각형 윗면) -->
+    <mask id="reveal">
+      <path class="draw" pathLength="1" fill="none" stroke="#fff"
+            stroke-width="440" stroke-linecap="round"
+            d="M -60,135 C 300,30 760,0 780,300"/>
+    </mask>
+
+    <!-- 가장자리를 안개처럼 거칠게 -->
+    <filter id="mist" x="-10%" y="-10%" width="120%" height="120%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.012 0.02" numOctaves="3" seed="4" result="n"/>
+      <feDisplacementMap in="SourceGraphic" in2="n" scale="38" xChannelSelector="R" yChannelSelector="G"/>
+      <feGaussianBlur stdDeviation="1.2"/>
+    </filter>
+  </defs>
+
+  <!-- 흰 배경 -->
+  <rect width="1200" height="800" fill="#fff"/>
+
+  <!-- 검은 정사각형 (x, y, width, height를 바꾸면 위치/크기 변경) -->
+  <rect x="600" y="250" width="360" height="360" fill="#000"/>
+
+  <!-- 달빛 물줄기: moon.jpg를 원하는 사진으로 교체 -->
+  <g filter="url(#mist)">
+    <g mask="url(#reveal)">
+      <g clip-path="url(#fan)">
+        <image class="flow" href="moon.jpg" x="-200" y="-100" width="1600" height="700"
+               preserveAspectRatio="xMidYMid slice"/>
+      </g>
+    </g>
+  </g>
+
+  <!-- 정사각형을 채우는 달: moon.jpg를 원하는 사진으로 교체 -->
+  <g clip-path="url(#box)">
+    <image class="rise" href="moon.jpg" x="600" y="250" width="360" height="360"
+           preserveAspectRatio="xMidYMid slice"/>
+  </g>
+
+  <!-- 라벨: 좌(우측정렬) / 우(좌측정렬) / 하(가로 중앙) -->
+  <g class="label">
+    <a href="fic.html"><text x="592" y="438" text-anchor="end">FIC</text></a>
+    <a href="art.html"><text x="984" y="438" text-anchor="start">ART</text></a>
+    <a href="card.html"><text x="784" y="662" text-anchor="middle">CARD</text></a>
+  </g>
+
+  <!-- 제목 자리 (원하는 글자로 교체) -->
+  <g class="label">
+    <text x="1140" y="736" text-anchor="end"
+          style="font:900 italic 72px 'Noto Sans JP',sans-serif; letter-spacing:0; fill:#111">月の結晶</text>
+    <text x="1140" y="772" text-anchor="end"
+          style="font:300 16px 'Noto Sans JP',sans-serif; letter-spacing:3px; fill:#444">2027 collaboration</text>
+  </g>
+</svg>
+
 </body>
 </html>
